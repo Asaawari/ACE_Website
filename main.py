@@ -94,7 +94,7 @@ def gameLoop():
                         game_close = False
 
                     # if 'p' has been pressed (play again)
-                    if event.key == pygame.K_c:
+                    if event.key == pygame.K_p:
                         gameLoop()
 
         # for every event since last iteration
