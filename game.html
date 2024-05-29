@@ -1,0 +1,168 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
+	</head>
+
+	<body>
+
+		<div class="nav">			
+			<div class="nav-links">
+				<a href="/index.html" target="_blank">Home</a>
+				<a href="/about.html" target="_blank">About Us</a>
+				<a href="/fests.html" target="_blank">Fests</a>
+				<a href="/notice.html" target="_blank">Notice Board</a>
+				<a href="/game.html" target="_blank">Game</a>
+			</div>
+		</div> 
+
+        <h1>Interactive Snake Game</h1>
+
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+        <script>
+            const canvas = document.getElementById("gameCanvas");
+            const ctx = canvas.getContext("2d");
+        
+            const white = "#FFFFFF";
+            const yellow = "#eeff00";
+            const black = "#000000";
+            const red = "#D53250";
+            const green = "#38a832";
+            const blue = "#3299D5";
+        
+            const dis_width = canvas.width;
+            const dis_height = canvas.height;
+        
+            const snake_block = 20;
+            const snake_speed = 25;
+            let snake_List = [];
+            let Length_of_snake = 1;
+        
+            let foodx = Math.round((Math.random() * (dis_width - snake_block)) / 10.0) * 10.0;
+            let foody = Math.round((Math.random() * (dis_height - snake_block)) / 10.0) * 10.0;
+        
+            let x1 = dis_width / 2;
+            let y1 = dis_height / 2;
+        
+            let x1_change = 0;
+            let y1_change = 0;
+        
+            let game_over = false;
+            let game_close = false;
+        
+            function drawSnake() {
+                for (let i = 0; i < snake_List.length; i++) {
+                    ctx.fillStyle = black;
+                    ctx.fillRect(snake_List[i][0], snake_List[i][1], snake_block, snake_block);
+                }
+            }
+        
+            function drawFood() {
+                ctx.fillStyle = green;
+                ctx.fillRect(foodx, foody, snake_block, snake_block);
+            }
+        
+            function message(msg, color) {
+                ctx.fillStyle = color;
+                ctx.font = "25px Bahnschrift";
+                ctx.fillText(msg, dis_width / 3.5, dis_height / 2);
+            }
+        
+            function gameLoop() {
+                if (game_over) return;
+        
+                if (game_close) {
+                    ctx.fillStyle = yellow;
+                    ctx.fillRect(0, 0, dis_width, dis_height);
+                    message("You Lost :( Press P to Play Again", black);
+        
+                    document.addEventListener('keydown', function(event) {
+                        if (event.key === 'q') {
+                            game_over = true;
+                            game_close = false;
+                        } else if (event.key === 'p') {
+                            restartGame();
+                        }
+                    });
+        
+                    return;
+                }
+        
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'ArrowLeft') {
+                        x1_change = -snake_block;
+                        y1_change = 0;
+                    } else if (event.key === 'ArrowRight') {
+                        x1_change = snake_block;
+                        y1_change = 0;
+                    } else if (event.key === 'ArrowUp') {
+                        y1_change = -snake_block;
+                        x1_change = 0;
+                    } else if (event.key === 'ArrowDown') {
+                        y1_change = snake_block;
+                        x1_change = 0;
+                    }
+                });
+        
+                if (x1 >= dis_width || x1 < 0 || y1 >= dis_height || y1 < 0) {
+                    game_close = true;
+                }
+        
+                x1 += x1_change;
+                y1 += y1_change;
+        
+                ctx.fillStyle = yellow;
+                ctx.fillRect(0, 0, dis_width, dis_height);
+        
+                drawFood();
+        
+                let snake_Head = [x1, y1];
+                snake_List.push(snake_Head);
+        
+                if (snake_List.length > Length_of_snake) {
+                    snake_List.shift();
+                }
+        
+                for (let i = 0; i < snake_List.length - 1; i++) {
+                    if (snake_List[i][0] === snake_Head[0] && snake_List[i][1] === snake_Head[1]) {
+                        game_close = true;
+                    }
+                }
+        
+                drawSnake();
+        
+                if (x1 === foodx && y1 === foody) {
+                    foodx = Math.round((Math.random() * (dis_width - snake_block)) / 10.0) * 10.0;
+                    foody = Math.round((Math.random() * (dis_height - snake_block)) / 10.0) * 10.0;
+                    Length_of_snake++;
+                }
+        
+                setTimeout(gameLoop, 1000 / snake_speed);
+            }
+        
+            function restartGame() {
+                game_over = false;
+                game_close = false;
+                snake_List = [];
+                Length_of_snake = 1;
+                x1 = dis_width / 2;
+                y1 = dis_height / 2;
+                x1_change = 0;
+                y1_change = 0;
+                foodx = Math.round((Math.random() * (dis_width - snake_block)) / 10.0) * 10.0;
+                foody = Math.round((Math.random() * (dis_height - snake_block)) / 10.0) * 10.0;
+                gameLoop();
+            }
+        
+            gameLoop();
+        
+        </script>
+
+        <hr>
+	</body>
+</html>
