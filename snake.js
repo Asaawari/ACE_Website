@@ -180,7 +180,7 @@ window.onload = function() {
     // Initialize the game
     function init() {
         // Load images
-        images = loadImages(["https://asaawari.github.io/ACE_Website/imgs/snake-graphics.png"]);
+        images = loadImages(["imgs/snake-graphics.png"]);
         tileimage = images[0];
     
         // Add mouse events
