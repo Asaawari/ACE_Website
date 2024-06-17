@@ -180,7 +180,7 @@ window.onload = function() {
     // Initialize the game
     function init() {
         // Load images
-        images = loadImages(["/imgs/snake-graphics.png"]);
+        images = loadImages(["https://asaawari.github.io/ACE_Website/imgs/snake-graphics.png"]);
         tileimage = images[0];
     
         // Add mouse events
@@ -271,10 +271,10 @@ window.onload = function() {
             
             // Draw a progress bar
             var loadpercentage = loadcount/loadtotal;
-            context.strokeStyle = "#ff8080";
+            context.strokeStyle = "#000000";
             context.lineWidth=3;
             context.strokeRect(18.5, 0.5 + canvas.height - 51, canvas.width-37, 32);
-            context.fillStyle = "#ff8080";
+            context.fillStyle = "#000000";
             context.fillRect(18.5, 0.5 + canvas.height - 51, loadpercentage*(canvas.width-37), 32);
             
             // Draw the progress text
